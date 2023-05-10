@@ -6,12 +6,12 @@ NC='\033[0m' # No Color
 
 # Print colorful banner with custom name
 echo -e "${GREEN}"
-echo '   _____ _     _______ ____  '
-echo '  / ____| |   |__   __/ __ \ '
-echo ' | |  __| |      | | | |  | |'
-echo ' | | |_ | |      | | | |  | |'
-echo ' | |__| | |____  | | | |__| |'
-echo '  \_____|______| |_|  \____/ '
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
 echo -e "${NC}"
 
 # Prompt for target domain
@@ -33,14 +33,14 @@ cat "$folder_name/subdomains.txt" | sort -u >> "$folder_name/all_subdomains.txt"
 
 # Perform CVE scanning using Nuclei
 echo -e "Performing CVE scanning..."
-nuclei -t nuclei-templates/cve/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/cve_scan.txt"
+nuclei -t /root/nuclei-templates/cves/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/cves_scan.txt"
 
 # Perform vulnerability scanning using Nuclei
 echo -e "Performing vulnerability scanning..."
-nuclei -t nuclei-templates/vulnerabilities/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/vulnerability_scan.txt"
+nuclei -t /root/nuclei-templates/vulnerabilities/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/vulnerability_scan.txt"
 
 # Detect exposed panels using Nuclei
 echo -e "Detecting exposed panels..."
-nuclei -t nuclei-templates/exposed-panels/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/exposed_panels.txt"
+nuclei -t /root/nuclei-templates/exposed-panels/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/exposed_panels.txt"
 
 echo -e "Reconnaissance completed. Results saved in the folder: $folder_name"
