@@ -19,4 +19,5 @@ The script will create a folder for the target domain, perform subdomain enumera
 Each target domain will have its own folder containing the subdomains.txt, all_subdomains.txt, cve_scan.txt, vulnerability_scan.txt, and exposed_panels.txt files.
 
 Thank You 
+
 KullaiSec
