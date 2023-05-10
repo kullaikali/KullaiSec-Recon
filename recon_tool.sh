@@ -26,11 +26,6 @@ echo -e "Performing subdomain enumeration with subfinder..."
 subfinder -d $target -o "$folder_name/subdomains.txt"
 cat "$folder_name/subdomains.txt" | sort -u >> "$folder_name/all_subdomains.txt"
 
-# Perform subdomain enumeration using amass
-echo -e "Performing subdomain enumeration with amass..."
-amass enum -d $target -o "$folder_name/subdomains.txt"
-cat "$folder_name/subdomains.txt" | sort -u >> "$folder_name/all_subdomains.txt"
-
 # Perform CVE scanning using Nuclei
 echo -e "Performing CVE scanning..."
 nuclei -t /root/nuclei-templates/cves/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/cves_scan.txt"
@@ -38,6 +33,10 @@ nuclei -t /root/nuclei-templates/cves/ -l "$folder_name/all_subdomains.txt" | te
 # Perform vulnerability scanning using Nuclei
 echo -e "Performing vulnerability scanning..."
 nuclei -t /root/nuclei-templates/vulnerabilities/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/vulnerability_scan.txt"
+
+# Detect exposures using Nuclei
+echo -e "Detecting exposures..."
+nuclei -t /root/nuclei-templates/exposures/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/exposures.txt"
 
 # Detect exposed panels using Nuclei
 echo -e "Detecting exposed panels..."
