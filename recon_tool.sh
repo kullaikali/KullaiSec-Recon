@@ -14,7 +14,7 @@ echo ' ***********************************************************************'
  echo ' ██║░╚██╗╚██████╔╝███████╗███████╗██║░░██║██║  ██████╔╝███████╗╚█████╔╝'
  echo ' ╚═╝░░╚═╝░╚═════╝░╚══════╝╚══════╝╚═╝░░╚═╝╚═╝  ╚═════╝░╚══════╝░╚════╝░'
 echo ' ************************************************************************'
-echo 'You need Subfinder, AssetFinder, Nuclei to run this TooL !!!!'
+echo 'You need Subfinder, AssetFinder, Nuclei to run this TooL!!!!'
 echo -e "${NC}"
 
 # Prompt for target domain
