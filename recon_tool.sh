@@ -6,12 +6,15 @@ NC='\033[0m' # No Color
 
 # Print colorful banner with custom name
 echo -e "${GREEN}"
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
-echo ' KullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSecKullaiSec'
+echo ' ***********************************************************************'
+ echo ' ██╗░░██╗██╗░░░██╗██╗░░░░░██╗░░░░░░█████╗░██╗  ░██████╗███████╗░█████╗░'
+ echo ' ██║░██╔╝██║░░░██║██║░░░░░██║░░░░░██╔══██╗██║  ██╔════╝██╔════╝██╔══██╗'
+ echo ' █████═╝░██║░░░██║██║░░░░░██║░░░░░███████║██║  ╚█████╗░█████╗░░██║░░╚═╝'
+ echo ' ██╔═██╗░██║░░░██║██║░░░░░██║░░░░░██╔══██║██║░  ╚═══██╗██╔══╝░░██║░░██╗'
+ echo ' ██║░╚██╗╚██████╔╝███████╗███████╗██║░░██║██║  ██████╔╝███████╗╚█████╔╝'
+ echo ' ╚═╝░░╚═╝░╚═════╝░╚══════╝╚══════╝╚═╝░░╚═╝╚═╝  ╚═════╝░╚══════╝░╚════╝░'
+echo ' ************************************************************************'
+echo 'You need Subfinder, AssetFinder, Nuclei to run this TooL !!!!'
 echo -e "${NC}"
 
 # Prompt for target domain
@@ -21,10 +24,16 @@ read -p "Enter the target domain: " target
 folder_name=$(echo "$target" | sed 's/\./_/g')
 mkdir -p "$folder_name"
 
-# Perform subdomain enumeration using subfinder
-echo -e "Performing subdomain enumeration with subfinder..."
-subfinder -d $target -o "$folder_name/subdomains.txt"
-cat "$folder_name/subdomains.txt" | sort -u >> "$folder_name/all_subdomains.txt"
+# Perform subdomain enumeration using Subfinder
+echo -e "Performing subdomain enumeration with Subfinder..."
+subfinder -d $target -o "$folder_name/subdomains_subfinder.txt"
+
+# Perform subdomain enumeration using Assetfinder
+echo -e "Performing subdomain enumeration with Assetfinder..."
+assetfinder --subs-only $target | tee "$folder_name/subdomains_assetfinder.txt"
+
+# Combine subdomains from Subfinder and Assetfinder, sort them, and create a final subdomain list
+cat "$folder_name/subdomains_subfinder.txt" "$folder_name/subdomains_assetfinder.txt" | sort -u >> "$folder_name/all_subdomains.txt"
 
 # Perform CVE scanning using Nuclei
 echo -e "Performing CVE scanning..."
