@@ -35,20 +35,41 @@ assetfinder --subs-only $target | tee "$folder_name/subdomains_assetfinder.txt"
 # Combine subdomains from Subfinder and Assetfinder, sort them, and create a final subdomain list
 cat "$folder_name/subdomains_subfinder.txt" "$folder_name/subdomains_assetfinder.txt" | sort -u >> "$folder_name/all_subdomains.txt"
 
-# Perform CVE scanning using Nuclei
+# Define your Slack webhook URL
+webhook_url="https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+
+# Function to send a message to Slack
+send_to_slack() {
+  local message="$1"
+  curl -X POST -H 'Content-type: application/json' --data '{"text":"'"$message"'"}' "$webhook_url"
+}
+
+# Perform CVE scanning using Nuclei and send notification if any CVEs are found
 echo -e "Performing CVE scanning..."
-nuclei -t /root/nuclei-templates/cves/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/cves_scan.txt"
+cve_scan_output=$(nuclei -t /root/nuclei-templates/cves/ -l "$folder_name/all_subdomains.txt")
+if [[ -n "$cve_scan_output" ]]; then
+  send_to_slack "CVEs found:\n$cve_scan_output"
+fi
 
-# Perform vulnerability scanning using Nuclei
+# Perform vulnerability scanning using Nuclei and send notification if any vulnerabilities are found
 echo -e "Performing vulnerability scanning..."
-nuclei -t /root/nuclei-templates/vulnerabilities/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/vulnerability_scan.txt"
+vulnerability_scan_output=$(nuclei -t /root/nuclei-templates/vulnerabilities/ -l "$folder_name/all_subdomains.txt")
+if [[ -n "$vulnerability_scan_output" ]]; then
+  send_to_slack "Vulnerabilities found:\n$vulnerability_scan_output"
+fi
 
-# Detect exposures using Nuclei
+# Detect exposures using Nuclei and send notification if any exposures are found
 echo -e "Detecting exposures..."
-nuclei -t /root/nuclei-templates/exposures/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/exposures.txt"
+exposures_output=$(nuclei -t /root/nuclei-templates/exposures/ -l "$folder_name/all_subdomains.txt")
+if [[ -n "$exposures_output" ]]; then
+  send_to_slack "Exposures found:\n$exposures_output"
+fi
 
-# Detect exposed panels using Nuclei
+# Detect exposed panels using Nuclei and send notification if any exposed panels are found
 echo -e "Detecting exposed panels..."
-nuclei -t /root/nuclei-templates/exposed-panels/ -l "$folder_name/all_subdomains.txt" | tee "$folder_name/exposed_panels.txt"
+exposed_panels_output=$(nuclei -t /root/nuclei-templates/exposed-panels/ -l "$folder_name/all_subdomains.txt")
+if [[ -n "$exposed_panels_output" ]]; then
+  send_to_slack "Exposed panels found:\n$exposed_panels_output"
+fi
 
 echo -e "Reconnaissance completed. Results saved in the folder: $folder_name"
