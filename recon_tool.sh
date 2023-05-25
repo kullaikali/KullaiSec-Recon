@@ -1,3 +1,24 @@
+#!/bin/bash
+
+# Color variables
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Print colorful banner with custom name
+echo -e "${GREEN}"
+echo ' ***********************************************************************'
+ echo ' ██╗░░██╗██╗░░░██╗██╗░░░░░██╗░░░░░░█████╗░██╗  ░██████╗███████╗░█████╗░'
+ echo ' ██║░██╔╝██║░░░██║██║░░░░░██║░░░░░██╔══██╗██║  ██╔════╝██╔════╝██╔══██╗'
+ echo ' █████═╝░██║░░░██║██║░░░░░██║░░░░░███████║██║  ╚█████╗░█████╗░░██║░░╚═╝'
+ echo ' ██╔═██╗░██║░░░██║██║░░░░░██║░░░░░██╔══██║██║░  ╚═══██╗██╔══╝░░██║░░██╗'
+ echo ' ██║░╚██╗╚██████╔╝███████╗███████╗██║░░██║██║  ██████╔╝███████╗╚█████╔╝'
+ echo ' ╚═╝░░╚═╝░╚═════╝░╚══════╝╚══════╝╚═╝░░╚═╝╚═╝  ╚═════╝░╚══════╝░╚════╝░'
+echo ' ************************************************************************'
+echo ' Created by Kullai '
+echo ' twitter  : https://twitter.com/Kullai12 '
+echo ' Linkedin : https://in.linkedin.com/in/kullai-metikala-8378b122a '
+echo ' Lets Hack Ethically !! No replies Just F**K It Up Bro Who cares !!'
+echo -e "${NC}"
 
 # Perform subdomain enumeration using Subfinder
 echo -e "Performing subdomain enumeration with Subfinder..."
